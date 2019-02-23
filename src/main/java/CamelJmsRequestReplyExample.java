@@ -65,7 +65,7 @@ public final class CamelJmsRequestReplyExample {
                     }
                 });
                 */
-                // IF replyToType=Exclusive is not used then , tempQueue is treated as shared queue. JMS Selectors are used then which only passes those exhcnage object to the next .process()  if the correlationID matches.Hence it tends to be slow.
+                // IF replyToType=Exclusive is not used then , tempQueue is treated as shared queue. JMS Selectors are used then which only passes those exchange object to the next .process()  if the correlationID matches.Hence it tends to be slow.
 
                 from("test-jms:queue:test.siriQueue").process(new Processor() {
                     @Override
