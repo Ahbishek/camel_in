@@ -22,6 +22,12 @@ public final class CamelEmbeddedJmsBroker {
         /* 1. vm embedded broker.
         Broker is started when first connection is created using vm protocol .
         Hence over here  we don't explicitly create another broker.
+
+        The VM transport allows clients to connect to each other inside the VM without the overhead of the network communication.
+        The connection used is not a socket connection but use direct method invocations which enables a high performance embedded messaging system.
+        The first client to use the VM connection will boot an embedded broker.
+        Subsequent connections will attach that the same broker.
+        Once all VM connections to the broker have been closed, the embedded broker will automatically shutdown.
         */
 
         /*Create basic vm broker using following
@@ -52,8 +58,6 @@ public final class CamelEmbeddedJmsBroker {
 
         createCamelRoute(context);
         sendMessageOnQueue(context);
-/*        Thread.sleep(1000);
-        context.stop();*/
     }
 
     private static void createCamelRoute(CamelContext context) throws Exception {
@@ -64,7 +68,7 @@ public final class CamelEmbeddedJmsBroker {
                     public void process(Exchange exchange) throws Exception {
                         System.out.println("JMSProperty " + exchange.getIn().getHeader("JMSPriority"));
                     }
-                }).to("file://C:\\Abhi-WOrk\\Code\\abhi.txt");
+                }).to("file://C:\\Camel-Works\\Code\\output.txt");
             }
         });
     }
@@ -75,7 +79,6 @@ public final class CamelEmbeddedJmsBroker {
         for (int i = 0; i < 10; i++) {
                     // send data to the queue.
                     template.sendBodyAndHeader("test-jms:queue:test.queue", "Test Message: " + i,"JMSPriority",new Integer(4));
-                    //template.sendBody("test-jms:queue:test.queue", "Test Message: " + i);
         }
     }
 }
