@@ -66,7 +66,7 @@ public final class CamelEmbeddedJmsBroker {
                 from("test-jms:queue:test.queue").process(new Processor() {
                     @Override
                     public void process(Exchange exchange) throws Exception {
-                        System.out.println("JMSProperty " + exchange.getIn().getHeader("JMSPriority"));
+                        System.out.println("Message " + exchange.getIn().getBody());
                     }
                 }).to("file://C:\\Camel-Works\\Code\\output.txt");
             }
@@ -78,7 +78,7 @@ public final class CamelEmbeddedJmsBroker {
         context.start();
         for (int i = 0; i < 10; i++) {
                     // send data to the queue.
-                    template.sendBodyAndHeader("test-jms:queue:test.queue", "Test Message: " + i,"JMSPriority",new Integer(4));
+                    template.sendBody("test-jms:queue:test.queue", "Test Message: " + i);
         }
     }
 }
